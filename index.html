@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f5f0">
+<title>Мой день — планировщик</title>
+<style>
+:root{--bg:#f7f5f0;--card:#fffefa;--ink:#292923;--muted:#77776d;--line:#e8e5dc;--accent:#546b54;--accent-soft:#e8eee5;--warm:#f3e8d7;--blue:#e8edf4;--pink:#f4e7e3;--shadow:0 8px 24px rgba(45,43,35,.06)}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);-webkit-tap-highlight-color:transparent}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 36px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:4px 0 18px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700}.title{font-size:30px;letter-spacing:-.04em;margin:5px 0 5px;font-weight:800}.sub{font-size:14px;color:var(--muted);line-height:1.45}.clock{font-variant-numeric:tabular-nums;font-size:19px;font-weight:750;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 12px;white-space:nowrap;box-shadow:var(--shadow)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:17px;margin:12px 0;box-shadow:var(--shadow)}.hero{background:#e8eee5;border-color:#d9e3d5}.hero-label{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#53674f}.next-title{font-size:21px;font-weight:800;margin:7px 0}.next-desc{font-size:14px;line-height:1.5;color:#55594f}.next-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.pill{border-radius:999px;background:rgba(255,255,255,.75);padding:7px 10px;font-size:12px;font-weight:700}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 10px}.stat strong{display:block;font-size:19px;font-variant-numeric:tabular-nums}.stat span{font-size:11px;color:var(--muted);line-height:1.35;display:block;margin-top:4px}.progress{height:7px;background:#e7e4dc;border-radius:99px;overflow:hidden;margin-top:12px}.progress>div{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .2s}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:24px 2px 10px}.section-head h2{font-size:19px;margin:0;letter-spacing:-.02em}.small-muted{font-size:12px;color:var(--muted)}
+.task{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;padding:14px 2px;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0}.check{appearance:none;width:23px;height:23px;border:1.8px solid #c9c8bd;border-radius:50%;margin:2px 0 0;display:grid;place-items:center;background:transparent;cursor:pointer}.check:checked{background:var(--accent);border-color:var(--accent)}.check:checked:after{content:"✓";font-size:14px;color:white;font-weight:800}.task.done .task-name{text-decoration:line-through;color:#89897f}.task-title-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.task-name{font-size:15px;font-weight:750;line-height:1.35}.task-desc{font-size:12px;line-height:1.45;color:var(--muted);margin-top:4px}.time{font-size:12px;font-weight:750;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--accent);background:var(--accent-soft);padding:6px 8px;border-radius:9px}.task.done .time{background:#f0eee8;color:#88877e}.kind{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:4px 6px;border-radius:6px;background:var(--warm);color:#816743}.kind.study{background:var(--blue);color:#536780}.kind.work{background:var(--pink);color:#8a5f55}.kind.break{background:#efeee9;color:#77776d}
+button,input,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--ink);padding:10px 12px;font-weight:700;font-size:13px}button:active{transform:scale(.98)}.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn-row{display:flex;gap:8px;flex-wrap:wrap}.btn-row button{flex:1}.toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}.editor{display:none;margin-top:12px}.editor.open{display:block}.edit-row{display:grid;grid-template-columns:1fr 84px;gap:8px;margin:8px 0}.edit-row label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}.edit-row input{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:white;color:var(--ink)}.edit-row input[type=number]{text-align:center}.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}.footer{font-size:11px;color:var(--muted);text-align:center;margin:24px 8px 0;line-height:1.5}.hidden{display:none!important}
+@media(min-width:600px){.wrap{padding-top:28px}.title{font-size:36px}.task{padding:15px 4px}.card{padding:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><div class="eyebrow" id="dateLine">ТВОЙ ПЛАН НА СЕГОДНЯ</div><h1 class="title">Мой день</h1><div class="sub">Гибкий план. Не ты под расписание — расписание под тебя.</div></div>
+    <div class="clock" id="clock">--:--</div>
+  </header>
+
+  <section class="card hero" aria-live="polite">
+    <div class="hero-label" id="nextLabel">СЛЕДУЮЩАЯ ЗАДАЧА</div>
+    <div class="next-title" id="nextTitle">Загружаем план…</div>
+    <div class="next-desc" id="nextDesc"></div>
+    <div class="next-meta"><span class="pill" id="nextTime">—</span><span class="pill" id="nextDuration">—</span></div>
+    <div class="progress"><div id="progressFill"></div></div>
+    <div class="small-muted" id="progressText" style="margin-top:7px">0% выполнено</div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><strong id="statDone">0/0</strong><span>задач завершено</span></div>
+    <div class="stat"><strong id="statStudy">5 ч</strong><span>учёба осталось по плану</span></div>
+    <div class="stat"><strong id="statWork">1,5 ч</strong><span>работа осталась по плану</span></div>
+  </div>
+
+  <div class="toolbar">
+    <div><strong>План на день</strong><div class="small-muted">Время пересчитывается автоматически</div></div>
+    <button id="editToggle" type="button">Настроить длительность</button>
+  </div>
+  <section class="card editor" id="editor">
+    <strong>Сколько минут закладывать на задачи</strong>
+    <div class="note">Измени длительность — расписание оставшихся задач пересчитается. Выполненные задачи не сдвигаются.</div>
+    <div id="durationInputs"></div>
+    <div class="btn-row" style="margin-top:12px"><button class="btn-primary" id="saveDurations">Сохранить длительность</button><button id="closeEditor">Закрыть</button></div>
+  </section>
+
+  <div class="section-head"><h2>Задачи</h2><span class="small-muted" id="remainingLabel"></span></div>
+  <section class="card" id="taskList"></section>
+
+  <section class="card">
+    <div class="section-head" style="margin:0 0 12px"><h2>Если график съехал</h2></div>
+    <div class="sub" style="margin-bottom:12px">Ничего страшного. Отметь, что сделано, и план пересчитается от текущего времени. Если задача затянулась — просто продолжай; следующий незавершённый блок начнётся от текущего момента.</div>
+    <div class="btn-row"><button id="recalcBtn" class="btn-primary">Пересчитать от сейчас</button><button id="resetBtn">Начать заново</button></div>
+    <div class="note">Данные сохраняются на этом устройстве в браузере. Если очистить данные Safari или открыть страницу в другом браузере, список может не перенестись.</div>
+  </section>
+  <div class="footer">Мой день · работает автономно · без аккаунта и без отправки данных в интернет</div>
+</div>
+<script>
+const initialTasks = [
+ {id:"bed",title:"Мягкий старт",desc:"Заправить кровать, разобрать сушилку, разложить вещи по местам.",kind:"home",minutes:20},
+ {id:"breakfast",title:"Завтрак",desc:"Приготовить что-нибудь простое и спокойно поесть.",kind:"food",minutes:30},
+ {id:"kitchen",title:"Кухня",desc:"Убрать упаковки от заказов, разобрать поверхности, помыть посуду и протереть столешницы.",kind:"home",minutes:45},
+ {id:"room",title:"Комната",desc:"Прикроватная тумба, комод под телевизором и рабочий стол. Разобрать беспорядок, протереть поверхности.",kind:"home",minutes:45},
+ {id:"break1",title:"Перерыв",desc:"Посидеть, попить воды, немного отдохнуть.",kind:"break",minutes:15},
+ {id:"bathroom",title:"Ванная",desc:"Разложить вещи, освободить пол, убрать одежду с вешалки, протереть поверхности и сантехнику.",kind:"home",minutes:50},
+ {id:"lunch",title:"Обед",desc:"Приготовить обед и поесть. Не затевать сложное блюдо.",kind:"food",minutes:35},
+ {id:"study1",title:"Экзамен — блок 1",desc:"Сложные темы, понимание материала, конспект. Начни с самого трудного.",kind:"study",minutes:120},
+ {id:"break2",title:"Перерыв",desc:"Встать из-за стола, размяться, проветрить комнату.",kind:"break",minutes:20},
+ {id:"work",title:"Работа",desc:"Одна главная рабочая задача и, если останется время, одна дополнительная.",kind:"work",minutes:90},
+ {id:"break3",title:"Отдых",desc:"Переключиться после работы, при необходимости перекусить.",kind:"break",minutes:20},
+ {id:"study2",title:"Экзамен — блок 2",desc:"Продолжить темы, ответить на вопросы, проверить себя без подсказок.",kind:"study",minutes:120},
+ {id:"robot",title:"Запустить робота-пылесоса",desc:"Освободить пол, убрать провода и мелкие предметы, запустить влажную уборку. В ванной помыть пол вручную, если нужно.",kind:"home",minutes:20},
+ {id:"dinner",title:"Отдых и еда",desc:"Небольшой ужин или перекус, если проголодалась.",kind:"food",minutes:20},
+ {id:"study3",title:"Экзамен — блок 3",desc:"Повторение, карточки, тестирование и закрепление пройденного.",kind:"study",minutes:60}
+];
+const STORAGE_KEY="my_day_planner_v1";
+let state;
+function todayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function freshState(){return {date:todayKey(),tasks:initialTasks.map(t=>({...t,done:false,minutes:t.minutes})),anchor:null}}
+function loadState(){
+ try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const s=JSON.parse(raw);if(s.date===todayKey()&&Array.isArray(s.tasks)){const byId=new Map(s.tasks.map(t=>[t.id,t]));return {...s,tasks:initialTasks.map(t=>({...t,...(byId.get(t.id)||{}),minutes:Number((byId.get(t.id)||t).minutes)||t.minutes}))}}}}catch(e){}
+ return freshState()
+}
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}}
+function fmtTime(date){return date.toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})}
+function addMinutes(date,mins){return new Date(date.getTime()+mins*60000)}
+function durationText(mins){if(mins<60)return mins+" мин";let h=Math.floor(mins/60),m=mins%60;return h+" ч"+(m?" "+m+" мин":"")}
+function kindName(k){return ({home:"Дом",food:"Еда",study:"Экзамен",work:"Работа",break:"Перерыв"})[k]||k}
+function computeSchedule(){
+ const now=new Date();let cursor=new Date(now);const result=[];let started=false;
+ for(const t of state.tasks){
+   if(t.done){result.push({...t,start:null,end:null,done:true});continue}
+   if(!started){started=true; if(state.anchor && new Date(state.anchor)>now) cursor=new Date(state.anchor);}
+   const start=new Date(cursor),end=addMinutes(start,t.minutes);
+   result.push({...t,start,end,done:false});cursor=end;
+ }
+ return result
+}
+function render(){
+ const now=new Date();document.getElementById("clock").textContent=fmtTime(now);
+ document.getElementById("dateLine").textContent=now.toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"}).toUpperCase();
+ const schedule=computeSchedule(),todo=schedule.filter(t=>!t.done),done=schedule.filter(t=>t.done);
+ const next=todo[0];
+ document.getElementById("nextLabel").textContent=next?"СЛЕДУЮЩАЯ ЗАДАЧА":"ВСЁ НА СЕГОДНЯ";
+ document.getElementById("nextTitle").textContent=next?next.title:"План выполнен 🎉";
+ document.getElementById("nextDesc").textContent=next?next.desc:"Ты отметила все задачи. Можно выдохнуть и отдохнуть.";
+ document.getElementById("nextTime").textContent=next?fmtTime(next.start)+"–"+fmtTime(next.end):"Готово";
+ document.getElementById("nextDuration").textContent=next?durationText(next.minutes):"";
+ const pct=Math.round(done.length/state.tasks.length*100);document.getElementById("progressFill").style.width=pct+"%";document.getElementById("progressText").textContent=pct+"% выполнено";
+ document.getElementById("statDone").textContent=done.length+"/"+state.tasks.length;
+ document.getElementById("statStudy").textContent=durationText(todo.filter(t=>t.kind==="study").reduce((a,t)=>a+t.minutes,0));
+ document.getElementById("statWork").textContent=durationText(todo.filter(t=>t.kind==="work").reduce((a,t)=>a+t.minutes,0));
+ document.getElementById("remainingLabel").textContent=todo.length+" осталось";
+ const list=document.getElementById("taskList");list.innerHTML="";
+ schedule.forEach(t=>{
+  const row=document.createElement("div");row.className="task"+(t.done?" done":"");
+  const check=document.createElement("input");check.type="checkbox";check.className="check";check.checked=t.done;check.setAttribute("aria-label","Отметить: "+t.title);
+  check.addEventListener("change",()=>{const item=state.tasks.find(x=>x.id===t.id);item.done=check.checked;state.anchor=null;save();render()});
+  const body=document.createElement("div");
+  const titleRow=document.createElement("div");titleRow.className="task-title-row";
+  const name=document.createElement("div");name.className="task-name";name.textContent=t.title;
+  const kind=document.createElement("span");kind.className="kind "+(t.kind==="study"?"study":t.kind==="work"?"work":t.kind==="break"?"break":"");kind.textContent=kindName(t.kind);
+  titleRow.append(name,kind);
+  const desc=document.createElement("div");desc.className="task-desc";desc.textContent=t.desc;
+  body.append(titleRow,desc);
+  const time=document.createElement("div");time.className="time";time.textContent=t.done?"Готово":fmtTime(t.start)+"–"+fmtTime(t.end);
+  row.append(check,body,time);list.append(row);
+ });
+ renderDurationInputs();
+}
+function renderDurationInputs(){
+ const container=document.getElementById("durationInputs");container.innerHTML="";
+ state.tasks.forEach(t=>{
+  const row=document.createElement("div");row.className="edit-row";
+  const labelWrap=document.createElement("div");const label=document.createElement("label");label.textContent=t.title;label.htmlFor="dur-"+t.id;labelWrap.append(label);
+  const input=document.createElement("input");input.id="dur-"+t.id;input.type="number";input.min="1";input.max="360";input.value=t.minutes;input.dataset.id=t.id;
+  row.append(labelWrap,input);container.append(row);
+ });
+}
+document.getElementById("editToggle").addEventListener("click",()=>document.getElementById("editor").classList.toggle("open"));
+document.getElementById("closeEditor").addEventListener("click",()=>document.getElementById("editor").classList.remove("open"));
+document.getElementById("saveDurations").addEventListener("click",()=>{
+ document.querySelectorAll("#durationInputs input").forEach(input=>{const v=Math.max(1,Math.min(360,parseInt(input.value,10)||1));const t=state.tasks.find(x=>x.id===input.dataset.id);if(t)t.minutes=v});
+ state.anchor=null;save();render();document.getElementById("editor").classList.remove("open");
+});
+document.getElementById("recalcBtn").addEventListener("click",()=>{state.anchor=new Date().toISOString();save();render();const btn=document.getElementById("recalcBtn");btn.textContent="План обновлён";setTimeout(()=>btn.textContent="Пересчитать от сейчас",1500)});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+ if(confirm("Сбросить отметки и длительность задач за сегодня?")){state=freshState();save();render()}
+});
+state=loadState();save();render();setInterval(()=>{render()},15000);
+</script>
+</body>
+</html>
